@@ -1,0 +1,11 @@
+.DS_Store
+.build/
+build/
+dist/
+.swiftpm/
+# Local design working files, demo files, and internal development notes.
+design/
+demo-scaffali/
+docs/*
+!docs/images/
+!docs/INSTALL.md
