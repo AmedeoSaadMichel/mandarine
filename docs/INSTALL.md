@@ -4,7 +4,7 @@
 
 - macOS 13 Ventura or later.
 - Apple Silicon or Intel Mac. The DMG contains a universal application.
-- FFmpeg is optional; needed for audio/video tools and certain image encoders.
+- FFmpeg and its codec libraries are included. No Homebrew or separate FFmpeg installation is needed.
 
 ## Download and install
 
@@ -27,20 +27,18 @@ A `.sha256` file is attached alongside the DMG. Download both to the same folder
 
 ```sh
 cd ~/Downloads
-shasum -a 256 -c Mandarine-0.1.0-universal.dmg.sha256
+shasum -a 256 -c Mandarine-0.1.1-universal.dmg.sha256
 ```
 
 The expected result is `OK`. A checksum verifies file integrity; it is not a substitute for Apple notarization.
 
-## Optional audio/video support
+## Included audio/video support
 
-Install [Homebrew](https://brew.sh) if needed, then run:
+The installer contains FFmpeg 9.0.2 and ffprobe, built for Apple Silicon and Intel. Open **Settings → Compatibility**: FFmpeg should show **Included with Mandarine**. The bundled helpers use only Apple system libraries; you do not need to install Homebrew or any codec package.
 
-```sh
-brew install ffmpeg
-```
+Licenses are included inside `Mandarine.app/Contents/Resources/FFmpeg`. The complete corresponding [source archive](https://github.com/AmedeoSaadMichel/mandarine/releases/download/v0.1.1/Mandarine-FFmpeg-9.0.2-sources.tar.gz) is attached to the same release, with [build instructions and notices](../vendor/ffmpeg/NOTICE.md).
 
-Restart Mandarine after installing FFmpeg and check **Settings → Compatibility**. Mandarine looks in `/opt/homebrew/bin`, `/usr/local/bin`, and `/usr/bin`.
+If FFmpeg is reported missing, replace the app with a fresh copy from the latest DMG.
 
 ## First gesture
 

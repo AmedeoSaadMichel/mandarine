@@ -55,7 +55,7 @@ struct CompatibilityItem: Identifiable, Equatable {
 enum CompatibilityReport {
     static func build(ffmpegPath: String? = Converter.ffmpegPath, encoders: Set<String> = Converter.ffmpegEncoders) -> [CompatibilityItem] {
         var items: [CompatibilityItem] = []
-        items.append(CompatibilityItem(name: "ffmpeg", ok: ffmpegPath != nil, detail: ffmpegPath ?? "Not found. Install with: brew install ffmpeg"))
+        items.append(CompatibilityItem(name: "ffmpeg", ok: ffmpegPath != nil, detail: ffmpegPath.map { $0 == Bundle.main.bundleURL.appendingPathComponent("Contents/Helpers/ffmpeg").path ? "Included with Mandarine" : $0 } ?? "Not found. Reinstall Mandarine from the latest DMG."))
         let needs: [(String, String, [String])] = [
             ("MP3", "audio", ["libmp3lame"]), ("Ogg Vorbis", "audio", ["libvorbis", "vorbis"]), ("Opus", "audio", ["libopus", "opus"]),
             ("H.264 (MP4)", "video", ["libx264"]), ("VP9 (WebM)", "video", ["libvpx-vp9"]),
@@ -470,6 +470,10 @@ struct AboutTab: View {
             Text("MIT License · © 2026 AmedeoSaadMichel").font(.caption).foregroundStyle(.secondary)
             Text("Version \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.1")").foregroundStyle(.secondary)
             Text("Convert and edit files by dropping them on a wheel. Everything runs on your Mac.").multilineTextAlignment(.center).padding(.horizontal, 40)
+            Text("Includes FFmpeg and codec libraries under their respective open-source licenses.")
+                .font(.caption).foregroundStyle(CitrusEditor.muted)
+            Link("FFmpeg licenses & source code", destination: URL(string: "https://github.com/AmedeoSaadMichel/mandarine/blob/main/vendor/ffmpeg/NOTICE.md")!)
+                .font(.caption).foregroundStyle(CitrusEditor.mint)
             CoffeeBanner()
                 .padding(.top, 12)
         }

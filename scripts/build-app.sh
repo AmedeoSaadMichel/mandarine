@@ -2,7 +2,11 @@
 # Builds Mandarine.app into ./build
 set -euo pipefail
 cd "$(dirname "$0")/.."
-VERSION=${VERSION:-0.1.0}
+VERSION=${VERSION:-0.1.1}
+# Runtime is reproducible from pinned sources; no system-installed dylibs are copied.
+if [[ ! -x vendor/ffmpeg/universal/ffmpeg || ! -x vendor/ffmpeg/universal/ffprobe || ! -d vendor/ffmpeg/licenses ]]; then
+  python3 scripts/build-ffmpeg.py
+fi
 # Universal builds run natively on both Apple Silicon and Intel Macs.
 swift build -c release --arch arm64 --arch x86_64
 BIN_DIR=$(swift build -c release --arch arm64 --arch x86_64 --show-bin-path)
@@ -13,6 +17,14 @@ cp ${BIN_DIR}/Mandarine "$APP/Contents/MacOS/Mandarine"
 if [[ -d ${BIN_DIR}/Mandarine_Mandarine.bundle ]]; then
   cp -R ${BIN_DIR}/Mandarine_Mandarine.bundle "$APP/Contents/Resources/"
 fi
+mkdir -p "$APP/Contents/Helpers" "$APP/Contents/Resources/FFmpeg"
+cp vendor/ffmpeg/universal/ffmpeg vendor/ffmpeg/universal/ffprobe "$APP/Contents/Helpers/"
+cp vendor/ffmpeg/NOTICE.md vendor/ffmpeg/sources.json "$APP/Contents/Resources/FFmpeg/"
+cp -R vendor/ffmpeg/licenses "$APP/Contents/Resources/FFmpeg/"
+for HELPER in ffmpeg ffprobe; do
+  lipo "$APP/Contents/Helpers/$HELPER" -verify_arch arm64 x86_64
+  codesign --force --sign - "$APP/Contents/Helpers/$HELPER"
+done
 cp LICENSE "$APP/Contents/Resources/LICENSE"
 cp Sources/Mandarine/Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 cat > "$APP/Contents/Info.plist" <<PLIST

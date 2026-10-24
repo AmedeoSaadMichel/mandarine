@@ -8,7 +8,7 @@
 
 Convert, edit, and keep files close — with a drag, a key, and a three-eyed mandarin.
 
-**[Download for Mac](https://github.com/AmedeoSaadMichel/mandarine/releases/latest/download/Mandarine-0.1.0-universal.dmg)** · [Installation help](docs/INSTALL.md) · [All releases](https://github.com/AmedeoSaadMichel/mandarine/releases) · [Buy me a coffee](https://buymeacoffee.com/asmichel)
+**[Download for Mac](https://github.com/AmedeoSaadMichel/mandarine/releases/latest/download/Mandarine-0.1.1-universal.dmg)** · [Installation help](docs/INSTALL.md) · [All releases](https://github.com/AmedeoSaadMichel/mandarine/releases) · [Buy me a coffee](https://buymeacoffee.com/asmichel)
 
 macOS 13+ · Apple Silicon & Intel · Free & open source · English interface
 
@@ -16,7 +16,7 @@ macOS 13+ · Apple Silicon & Intel · Free & open source · English interface
 
 ## Install in a minute
 
-1. **[Download Mandarine.dmg](https://github.com/AmedeoSaadMichel/mandarine/releases/latest/download/Mandarine-0.1.0-universal.dmg)** and open it.
+1. **[Download Mandarine.dmg](https://github.com/AmedeoSaadMichel/mandarine/releases/latest/download/Mandarine-0.1.1-universal.dmg)** and open it.
 2. Drag **Mandarine** onto **Applications**.
 3. Eject the disk image and open **Mandarine** from Applications.
 4. Find the three-eyed mandarin in your **menu bar**. Open its menu to access Settings, shelves, and file actions.
@@ -63,13 +63,9 @@ Change a shortcut in **Settings → General** (wheels) or **Settings → Shelves
 
 Conversion covers images, text documents, spreadsheets, audio, and video. Available actions depend on the selected files and installed components. Existing output files are not overwritten; Mandarine adds a number to the new filename.
 
-**FFmpeg is optional and installed separately.** Audio/video tools and some image formats require it. With [Homebrew](https://brew.sh) installed:
+**FFmpeg is included.** The DMG contains FFmpeg, ffprobe, and the codec libraries for Apple Silicon and Intel. There is no Homebrew setup and no separate download. Open **Settings → Compatibility** to see the included runtime and available encoders.
 
-```sh
-brew install ffmpeg
-```
-
-Open **Settings → Compatibility** to check available encoders. FFmpeg is not bundled with the download.
+This software uses [FFmpeg](https://ffmpeg.org), distributed with GPL components. Its [corresponding source archive](https://github.com/AmedeoSaadMichel/mandarine/releases/download/v0.1.1/Mandarine-FFmpeg-9.0.2-sources.tar.gz), build recipe, and [license notices](vendor/ffmpeg/NOTICE.md) are available alongside the installer.
 
 ## Made for your Mac
 
@@ -79,22 +75,22 @@ The Citrus interface brings plum surfaces, cream lettering, mint accents, and th
 
 ## Build from source
 
-Requires Xcode command-line tools with Swift 5.9 or newer.
+Requires Xcode command-line tools with Swift 5.9 or newer, Python 3, CMake, and pkg-config. Building the included FFmpeg runtime from source takes several minutes on the first build; later builds reuse it.
 
 ```sh
 git clone https://github.com/AmedeoSaadMichel/mandarine.git
 cd mandarine
 swift test
 ./scripts/build-app.sh    # universal build/Mandarine.app
-./scripts/build-dmg.sh    # dist/Mandarine-0.1.0-universal.dmg
+./scripts/build-dmg.sh    # dist/Mandarine-0.1.1-universal.dmg
 ```
 
-Release version can be set with `VERSION=0.1.1 ./scripts/build-dmg.sh`. Generated bundles and disk images are excluded from Git; downloadable installers are attached to releases.
+Release version can be set with `VERSION=0.1.2 ./scripts/build-dmg.sh`. Generated bundles and disk images are excluded from Git; downloadable installers are attached to releases.
 
 ## Limitations
 
 - No automatic updater yet; install future releases from this page.
-- FFmpeg formats depend on the encoders installed on your Mac.
+- Available formats depend on the encoders included in the bundled FFmpeg build.
 - Spreadsheet conversion uses the first sheet and does not preserve formulas, styling, or other sheets. EPUB conversion extracts text.
 - No OCR, AI backgrounds, or support for XLS, PPT/PPTX, or Pages.
 - Native processing limits and timeouts protect against oversized files.
@@ -107,4 +103,4 @@ If Mandarine makes your day a little easier, [buy me a coffee](https://buymeacof
 
 ## License
 
-[MIT](LICENSE) · © 2026 AmedeoSaadMichel. Lilita One is bundled under the [SIL Open Font License](Sources/Mandarine/Resources/LilitaOne-OFL.txt). FFmpeg, installed separately, retains the license of its own build.
+[MIT](LICENSE) · © 2026 AmedeoSaadMichel. Lilita One is bundled under the [SIL Open Font License](Sources/Mandarine/Resources/LilitaOne-OFL.txt). Bundled FFmpeg is a separate command-line work distributed under GPL version 2 or later, with matching sources. Its codec libraries retain their own licenses; see [third-party notices](vendor/ffmpeg/NOTICE.md).

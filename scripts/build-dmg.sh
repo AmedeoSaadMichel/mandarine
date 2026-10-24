@@ -2,9 +2,10 @@
 # Build a universal app, then package a drag-to-Applications disk image.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-VERSION=${VERSION:-0.1.0}
+VERSION=${VERSION:-0.1.1}
 export VERSION
 ./scripts/build-app.sh
+./scripts/check-bundled-runtime.sh
 APP="$PWD/build/Mandarine.app"
 ARTIFACT="Mandarine-${VERSION}-universal.dmg"
 mkdir -p dist
@@ -29,15 +30,22 @@ First steps: drag a file, then tap Shift for Conversion, Command for Tools,
 Control for Actions, or Option for a shelf. With Control, begin dragging BEFORE pressing it.
 All four shortcuts can be changed in Settings.
 
-Audio/video tools and some image formats need FFmpeg installed separately:
-  brew install ffmpeg
+FFmpeg and its codec libraries are included inside Mandarine.app.
+No Homebrew installation or separate FFmpeg download is needed.
 Check Settings > Compatibility for the tools available on your Mac.
+Licenses are included inside the app; matching sources are attached to the GitHub release.
 
 Downloads, source code, and installation help:
 https://github.com/AmedeoSaadMichel/mandarine
 TXT
 codesign --verify --deep --strict "$STAGING/Mandarine.app"
 lipo "$STAGING/Mandarine.app/Contents/MacOS/Mandarine" -verify_arch arm64 x86_64
-hdiutil create -volname "Mandarine" -srcfolder "$STAGING" -ov -format UDZO "dist/$ARTIFACT"
+for HELPER in ffmpeg ffprobe; do
+  lipo "$STAGING/Mandarine.app/Contents/Helpers/$HELPER" -verify_arch arm64 x86_64
+done
+# Reserve filesystem overhead explicitly for the larger bundled runtime.
+IMAGE_KB=$(( $(du -sk "$STAGING" | awk '{print $1}') * 12 / 10 + 65536 ))
+hdiutil create -volname "Mandarine" -srcfolder "$STAGING" -fs HFS+ -size "${IMAGE_KB}k" -ov -format UDZO "dist/$ARTIFACT"
 (cd dist && shasum -a 256 "$ARTIFACT" > "$ARTIFACT.sha256")
+./scripts/package-ffmpeg-sources.sh
 echo "Created dist/$ARTIFACT"

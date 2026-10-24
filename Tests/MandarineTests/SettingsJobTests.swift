@@ -96,7 +96,7 @@ final class SettingsJobTests: XCTestCase {
     func testCompatibilityReport() {
         let none = CompatibilityReport.build(ffmpegPath: nil, encoders: [])
         XCTAssertFalse(none.first { $0.name == "ffmpeg" }!.ok)
-        XCTAssertTrue(none.first { $0.name == "ffmpeg" }!.detail.contains("brew install ffmpeg"))
+        XCTAssertTrue(none.first { $0.name == "ffmpeg" }!.detail.contains("Reinstall Mandarine"))
         XCTAssertFalse(none.first { $0.name == "MP3" }!.ok)
         XCTAssertTrue(none.last!.ok, "le funzioni di sistema non dipendono da ffmpeg")
         let full = CompatibilityReport.build(ffmpegPath: "/opt/homebrew/bin/ffmpeg", encoders: ["libmp3lame", "libx264", "vorbis"])

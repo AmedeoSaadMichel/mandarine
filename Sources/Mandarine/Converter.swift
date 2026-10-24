@@ -75,9 +75,16 @@ struct FormatPrefs: Codable, Equatable {
 }
 
 enum Converter {
-    static var ffmpegPath: String? {
-        ["/opt/homebrew/bin/ffmpeg", "/usr/local/bin/ffmpeg", "/usr/bin/ffmpeg"]
-            .first { FileManager.default.isExecutableFile(atPath: $0) }
+    /// Prefer the self-contained runtime shipped in the app. External paths support source builds.
+    static func findFFmpeg(bundleURL: URL = Bundle.main.bundleURL,
+                           externalPaths: [String] = ["/opt/homebrew/bin/ffmpeg", "/usr/local/bin/ffmpeg", "/usr/bin/ffmpeg"]) -> String? {
+        let bundled = bundleURL.appendingPathComponent("Contents/Helpers/ffmpeg").path
+        return ([bundled] + externalPaths).first { FileManager.default.isExecutableFile(atPath: $0) }
+    }
+
+    static var ffmpegPath: String? { findFFmpeg() }
+    static var bundledFFmpeg: Bool {
+        ffmpegPath == Bundle.main.bundleURL.appendingPathComponent("Contents/Helpers/ffmpeg").path
     }
 
     /// Encoders reported by the installed ffmpeg (empty when ffmpeg is missing).
@@ -399,7 +406,7 @@ enum Converter {
 
     /// Runs ffmpeg quietly, with progress when `duration` is known.
     static func runFFmpeg(_ args: [String], duration: Double? = nil, progress: (@Sendable (Double) -> Void)? = nil) async throws {
-        guard let ff = ffmpegPath else { throw ConversionError(message: "ffmpeg not found. Install with: brew install ffmpeg") }
+        guard let ff = ffmpegPath else { throw ConversionError(message: "FFmpeg is missing. Reinstall Mandarine from the latest DMG. For source builds, install FFmpeg separately.") }
         var full = ["-hide_banner", "-loglevel", "error", "-nostdin"]
         if progress != nil, (duration ?? 0) > 0 { full += ["-progress", "pipe:1", "-nostats"] }
         try await run(ff, full + args, duration: duration, progress: progress)
