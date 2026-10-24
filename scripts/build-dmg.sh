@@ -37,7 +37,7 @@ Downloads, source code, and installation help:
 https://github.com/AmedeoSaadMichel/mandarine
 TXT
 codesign --verify --deep --strict "$STAGING/Mandarine.app"
-lipo -verify_arch arm64 x86_64 "$STAGING/Mandarine.app/Contents/MacOS/Mandarine"
+lipo "$STAGING/Mandarine.app/Contents/MacOS/Mandarine" -verify_arch arm64 x86_64
 hdiutil create -volname "Mandarine" -srcfolder "$STAGING" -ov -format UDZO "dist/$ARTIFACT"
 (cd dist && shasum -a 256 "$ARTIFACT" > "$ARTIFACT.sha256")
 echo "Created dist/$ARTIFACT"
