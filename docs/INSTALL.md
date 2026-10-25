@@ -8,6 +8,8 @@
 
 ## Download and install
 
+**You only need the DMG.** FFmpeg is already included in Mandarine 0.1.1 and later. Do not install Homebrew or download the FFmpeg/source archives to use the app. Those source archives are provided for developers and license compliance.
+
 1. Get the DMG from the [latest release](https://github.com/AmedeoSaadMichel/mandarine/releases/latest).
 2. Open it and drag **Mandarine.app** to the **Applications** shortcut inside the disk image.
 3. Eject the disk image. Launch Mandarine from **Applications**, not from the DMG.
@@ -48,4 +50,4 @@ Always start dragging **before** pressing Control, otherwise macOS opens the con
 
 ## Update or uninstall
 
-Quit Mandarine before replacing it in Applications with a newer download. To uninstall, quit and move Mandarine.app from Applications to Trash. Shelf references and preferences may remain in your user Library; uninstalling the app does not delete the original files placed on shelves.
+To update from 0.1.0, install 0.1.1 or later using the same DMG steps; FFmpeg will be included automatically. Quit Mandarine before replacing it in Applications with a newer download. To uninstall, quit and move Mandarine.app from Applications to Trash. Shelf references and preferences may remain in your user Library; uninstalling the app does not delete the original files placed on shelves.

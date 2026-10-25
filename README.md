@@ -10,16 +10,22 @@ Convert, edit, and keep files close — with a drag, a key, and a three-eyed man
 
 **[Download for Mac](https://github.com/AmedeoSaadMichel/mandarine/releases/latest/download/Mandarine-0.1.1-universal.dmg)** · [Installation help](docs/INSTALL.md) · [All releases](https://github.com/AmedeoSaadMichel/mandarine/releases) · [Buy me a coffee](https://buymeacoffee.com/asmichel)
 
+**FFmpeg included — no Homebrew or extra installation required.**
+
 macOS 13+ · Apple Silicon & Intel · Free & open source · English interface
 
 </div>
 
 ## Install in a minute
 
+**Download only the `.dmg` file.** FFmpeg and the audio/video codecs are already inside the app. The source archives listed on the release page are for developers.
+
 1. **[Download Mandarine.dmg](https://github.com/AmedeoSaadMichel/mandarine/releases/latest/download/Mandarine-0.1.1-universal.dmg)** and open it.
 2. Drag **Mandarine** onto **Applications**.
 3. Eject the disk image and open **Mandarine** from Applications.
 4. Find the three-eyed mandarin in your **menu bar**. Open its menu to access Settings, shelves, and file actions.
+
+**Updating from 0.1.0?** Quit Mandarine and replace it in Applications with version 0.1.1 or newer. No separate FFmpeg installation is needed.
 
 **First launch:** this initial community release is ad-hoc signed and **not notarized by Apple**. macOS may block it. After attempting to open it, go to **System Settings → Privacy & Security → Open Anyway**, if you trust this download. See [installation help](docs/INSTALL.md). No need to disable Gatekeeper.
 
