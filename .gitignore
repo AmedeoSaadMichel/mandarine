@@ -9,3 +9,5 @@ demo-scaffali/
 docs/*
 !docs/images/
 !docs/INSTALL.md
+!docs/GUIDE.md
+!docs/TECHNICAL.md
